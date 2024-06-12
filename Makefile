@@ -9,6 +9,12 @@ BUILDFLAGS:=-gcflags 'all=-N -l'
 
 GOBIN?=$(shell go env GOPATH)/bin
 
+# サブモジュールのスキーマからコードを自動生成
+.PHONY: generate-graphql
+generate-graphql:
+	@go install github.com/99designs/gqlgen
+	$(GOBIN)/gqlgen --config .gqlgen.yml
+
 # ローカル開発で作成されたバイナリを削除
 .PHONY: remove-bin
 remove-bin:
