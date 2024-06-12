@@ -1,0 +1,3 @@
+[submodule "yy-go-schema-template"]
+	path = yy-go-schema-template
+	url = https://github.com/Yoshioka9709/yy-go-schema-template.git
