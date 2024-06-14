@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 
 services:
   dynamodb-local:
@@ -19,6 +19,24 @@ services:
     depends_on:
       - dynamodb-local
 
+  redis:
+    image: redis:6.0-alpine # ElastiCache Redis version
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - 8001:8001
+    volumes:
+      - redisinsight:/db
+
 volumes:
   dynamodb-local:
+    driver: local
+  redis:
+    driver: local
+  redisinsight:
     driver: local

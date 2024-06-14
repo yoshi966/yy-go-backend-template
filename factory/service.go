@@ -1,9 +1,16 @@
 package factory
 
+import (
+	"github.com/Yoshioka9709/yy-go-backend-template/service"
+)
+
 // Service はサービスレジストリ
 type Service interface {
 	// TODO: RepositoryFactory がここにいるのは謎なのでどうにかする
 	RepositoryFactory() *RepositoryFactory
+
+	NewUser() service.User
+	NewTodo() service.Todo
 }
 
 // serviceFactory はサービスレジストリの実装
@@ -23,4 +30,16 @@ func NewService(setting *ServiceFactorySettings) Service {
 // RepositoryFactory リポジトリを返す
 func (s *serviceFactory) RepositoryFactory() *RepositoryFactory {
 	return s.repository
+}
+
+// NewUser ユーザサービスを返す
+func (s *serviceFactory) NewUser() service.User {
+	userRepo := s.repository.NewUser()
+	return service.NewUsers(userRepo)
+}
+
+// NewTodo Todoサービスを返す
+func (s *serviceFactory) NewTodo() service.Todo {
+	todoRepo := s.repository.NewTodo()
+	return service.NewTodos(todoRepo)
 }

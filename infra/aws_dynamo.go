@@ -6,7 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/guregu/dynamo"
 
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/str"
 )
 
 // NewDynamoDBClient DynamoDBの初期化
@@ -26,4 +27,9 @@ func NewDynamoDBClient() *dynamo.DB {
 
 	db := dynamo.New(getAWSSession(), config)
 	return db
+}
+
+// TableName テーブル名を取得
+func TableName(name string) string {
+	return str.UpperFirst(name) + "-" + str.UpperFirst(env.Envcode())
 }

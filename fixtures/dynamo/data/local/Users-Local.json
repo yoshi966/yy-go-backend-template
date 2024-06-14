@@ -1,0 +1,46 @@
+[
+    {
+      "Put": {
+        "TableName": "Users-Local",
+        "Item": {
+          "PK": {
+              "S": "user"
+          },
+          "ID": {
+              "S": "dummyuserid0001"
+          },
+          "CreatedAt": {
+              "S": "2024-06-01T12:00:00.0000000Z"
+          },
+          "UpdatedAt": {
+              "S": "2024-06-01T12:00:00.0000000Z"
+          },
+          "Name": {
+              "S": "テストユーザー1"
+          }
+        }
+      }
+    },
+    {
+      "Put": {
+        "TableName": "Users-Local",
+        "Item": {
+          "PK": {
+              "S": "user"
+          },
+          "ID": {
+              "S": "dummyuserid0002"
+          },
+          "CreatedAt": {
+              "S": "2024-06-01T12:00:00.0000000Z"
+          },
+          "UpdatedAt": {
+              "S": "2024-06-01T12:00:00.0000000Z"
+          },
+          "Name": {
+              "S": "テストユーザー2"
+          }
+        }
+      }
+    }
+  ]

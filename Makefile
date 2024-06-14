@@ -15,6 +15,25 @@ generate-graphql:
 	@go install github.com/99designs/gqlgen
 	$(GOBIN)/gqlgen --config .gqlgen.yml
 
+# 初期データを投入
+.PHONY: init-db-local
+init-db-local: docker-up init-dynamo init-redis
+	@echo "$(BOLD)+-------------------------------------------+$(RESET)"
+	@echo "$(BOLD)|                                           |$(RESET)"
+	@echo "$(LBLUE)|  dynamo-db-admin: http://localhost:8002/  |$(RESET)"
+	@echo "$(LRED)|  RedisInsight:    http://localhost:8001/  |$(RESET)"
+	@echo "$(BOLD)|                                           |$(RESET)"
+	@echo "$(BOLD)+-------------------------------------------+$(RESET)"
+
+.PHONY: init-dynamo
+init-dynamo: docker-up
+	AWS_DEFAULT_REGION= AWS_ACCESS_KEY_ID=fake AWS_SECRET_ACCESS_KEY=fake \
+	fixtures/dynamo/init_tables.sh
+
+.PHONY: init-redis
+init-redis: docker-up
+	docker compose exec redis redis-cli flushall
+
 # ローカル開発で作成されたバイナリを削除
 .PHONY: remove-bin
 remove-bin:
@@ -58,5 +77,8 @@ docker-up:
 .PHONY: docker-down
 docker-down:
 	docker compose down --remove-orphans
-	docker volume rm yy-go-backend-template-dynamodb-local-1
-	docker volume rm yy-go-backend-template-dynamodb-admin-1
+	docker volume rm yy-go-backend-template-dynamodb-local
+	docker volume rm yy-go-backend-template-dynamodb-admin
+	docker volume rm yy-go-backend-template-dynamodb-redis
+	docker volume rm yy-go-backend-template-dynamodb-redisinsight
+
