@@ -9,10 +9,10 @@ import (
 	"os/signal"
 	"time"
 
-	"yy-go-backend-template/factory"
-	"yy-go-backend-template/infra"
-	"yy-go-backend-template/middleware"
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/factory"
+	"github.com/Yoshioka9709/yy-go-backend-template/infra"
+	"github.com/Yoshioka9709/yy-go-backend-template/middleware"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/gin-gonic/gin"
 	"github.com/guregu/dynamo"

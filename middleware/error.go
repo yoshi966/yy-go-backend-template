@@ -3,9 +3,9 @@ package middleware
 import (
 	"errors"
 
-	"yy-go-backend-template/util/env"
-	"yy-go-backend-template/util/errs"
-	"yy-go-backend-template/util/errs/codes"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/errs"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/errs/codes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"

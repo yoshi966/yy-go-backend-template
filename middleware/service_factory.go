@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"yy-go-backend-template/factory"
+	"github.com/Yoshioka9709/yy-go-backend-template/factory"
 
 	"github.com/gin-gonic/gin"
 )

@@ -3,7 +3,7 @@ package middleware
 import (
 	"time"
 
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

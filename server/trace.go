@@ -1,7 +1,7 @@
 package server
 
 import (
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"

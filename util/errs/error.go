@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"yy-go-backend-template/util/errs/codes"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/errs/codes"
 
 	"golang.org/x/xerrors"
 )

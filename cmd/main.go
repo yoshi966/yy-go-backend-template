@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"yy-go-backend-template/server"
-	"yy-go-backend-template/util"
+	"github.com/Yoshioka9709/yy-go-backend-template/server"
+	"github.com/Yoshioka9709/yy-go-backend-template/util"
 )
 
 func main() {
