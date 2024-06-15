@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"time"
 
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"

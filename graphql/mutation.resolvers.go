@@ -6,24 +6,58 @@ package graphql
 
 import (
 	"context"
-	"fmt"
-	"yy-go-backend-template/graphql/generated"
-	"yy-go-backend-template/model"
+
+	"github.com/Yoshioka9709/yy-go-backend-template/graphql/generated"
+	"github.com/Yoshioka9709/yy-go-backend-template/model"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/validator"
 )
+
+// CreateUser is the resolver for the createUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewUser().Create(ctx, &input)
+}
+
+// UpdateUser is the resolver for the updateUser field.
+func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUserInput) (*model.User, error) {
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewUser().Update(ctx, &input)
+}
+
+// DeleteUser is the resolver for the deleteUser field.
+func (r *mutationResolver) DeleteUser(ctx context.Context, input model.DeleteUserInput) (*model.User, error) {
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewUser().Delete(ctx, &input)
+}
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.CreateTodoInput) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewTodo().Create(ctx, &input)
 }
 
 // UpdateTodo is the resolver for the updateTodo field.
 func (r *mutationResolver) UpdateTodo(ctx context.Context, input model.UpdateTodoInput) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: UpdateTodo - updateTodo"))
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewTodo().Update(ctx, &input)
 }
 
 // DeleteTodo is the resolver for the deleteTodo field.
 func (r *mutationResolver) DeleteTodo(ctx context.Context, input model.DeleteTodoInput) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: DeleteTodo - deleteTodo"))
+	if err := validator.Struct(ctx, input); err != nil {
+		return nil, err
+	}
+	return getService(ctx).NewTodo().Delete(ctx, &input)
 }
 
 // Mutation returns generated.MutationResolver implementation.

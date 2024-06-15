@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"yy-go-backend-template/util/env"
+	"github.com/Yoshioka9709/yy-go-backend-template/graphql"
+	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +21,7 @@ func getDebugMessage(c *gin.Context) string {
 }
 
 func defineRoutes(r gin.IRouter) {
-	// routes := r.Group("/" + apiVersion)
+	routes := r.Group("/" + apiVersion)
 
 	// =================
 	// Health Check Path
@@ -32,5 +33,5 @@ func defineRoutes(r gin.IRouter) {
 	// =================
 	// GraphQL App Handler
 	// =================
-	// routes.Any("/graphql", graphql.Handler())
+	routes.Any("/graphql", graphql.Handler())
 }

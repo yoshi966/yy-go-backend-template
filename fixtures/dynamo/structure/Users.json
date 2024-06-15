@@ -1,0 +1,23 @@
+{
+    "KeySchema": [
+        {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "ID",
+            "KeyType": "RANGE"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "ID",
+            "AttributeType": "S"
+        }
+    ],
+    "BillingMode": "PAY_PER_REQUEST"
+}

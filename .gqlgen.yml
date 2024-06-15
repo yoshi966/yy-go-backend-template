@@ -20,6 +20,9 @@ resolver:
 
 struct_tag: json
 
+autobind:
+  - github.com/Yoshioka9709/yy-go-backend-template/model
+
 models:
   ID:
     model:
@@ -27,8 +30,12 @@ models:
   String:
     model:
       - github.com/99designs/gqlgen/graphql.String
+      - github.com/Yoshioka9709/yy-go-backend-template/model.Cursor
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  Timestamp:
+    model:
+      - github.com/99designs/gqlgen/graphql.Time
