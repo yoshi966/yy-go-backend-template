@@ -30,6 +30,7 @@ models:
   String:
     model:
       - github.com/99designs/gqlgen/graphql.String
+      - github.com/Yoshioka9709/yy-go-backend-template/model.Cursor
   Int:
     model:
       - github.com/99designs/gqlgen/graphql.Int

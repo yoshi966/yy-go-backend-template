@@ -20,6 +20,27 @@ type DeleteUserInput struct {
 	ID string `json:"id" validate:"required"`
 }
 
+type FindUserFilter struct {
+	Paging *DataPage
+}
+
+type UserConnection struct {
+	Edges      []*UserEdge `json:"edges"`
+	PageInfo   *PageInfo   `json:"pageInfo"`
+	TotalCount int         `json:"totalCount"`
+}
+
+type UserEdge struct {
+	Cursor Cursor `json:"cursor"`
+	Node   *User  `json:"node"`
+}
+
+// Set エッジに値を設定
+func (e *UserEdge) Set(cursor Cursor, node any) {
+	e.Cursor = cursor
+	e.Node = node.(*User)
+}
+
 // NewUser ユーザー初期化
 func NewUser(name string) *User {
 	return &User{

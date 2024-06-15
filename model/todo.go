@@ -32,9 +32,29 @@ type DeleteTodoInput struct {
 	UserID string `json:"userId" validate:"required"`
 }
 
+type FindTodoFilter struct {
+	Paging *DataPage
+}
+
+type TodoConnection struct {
+	Edges      []*TodoEdge `json:"edges"`
+	PageInfo   *PageInfo   `json:"pageInfo"`
+	TotalCount int         `json:"totalCount"`
+}
+
+type TodoEdge struct {
+	Cursor Cursor `json:"cursor"`
+	Node   *Todo  `json:"node"`
+}
+
+// Set エッジに値を設定
+func (e *TodoEdge) Set(cursor Cursor, node any) {
+	e.Cursor = cursor
+	e.Node = node.(*Todo)
+}
+
 // NewTodo Todo初期化
-func NewTodo(user *User, text string) *Todo {
-	now := util.GetTimeNow()
+func NewTodo(user *User, text string, now time.Time) *Todo {
 	return &Todo{
 		ID:        util.GetULIDString(),
 		Text:      text,

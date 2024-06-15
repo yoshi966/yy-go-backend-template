@@ -10,7 +10,7 @@ import (
 // Todo Todoのインターフェース
 type Todo interface {
 	GetOne(ctx context.Context, id string) (*model.Todo, error)
-	Find(ctx context.Context) ([]*model.Todo, error)
+	Find(ctx context.Context, filter *model.FindTodoFilter) (*model.TodoConnection, error)
 
 	Create(ctx context.Context, input *model.CreateTodoInput) (*model.Todo, error)
 	Update(ctx context.Context, input *model.UpdateTodoInput) (*model.Todo, error)
@@ -38,8 +38,8 @@ func (t *todo) GetOne(ctx context.Context, id string) (*model.Todo, error) {
 }
 
 // Find Todo情報の検索
-func (t *todo) Find(ctx context.Context) ([]*model.Todo, error) {
-	return t.todoRepo.Find(ctx)
+func (t *todo) Find(ctx context.Context, filter *model.FindTodoFilter) (*model.TodoConnection, error) {
+	return t.todoRepo.Find(ctx, filter)
 }
 
 // Create Todoを作成
