@@ -6,6 +6,7 @@ import (
 	"github.com/Yoshioka9709/yy-go-backend-template/dto"
 	"github.com/Yoshioka9709/yy-go-backend-template/infra"
 	"github.com/Yoshioka9709/yy-go-backend-template/model"
+	"github.com/Yoshioka9709/yy-go-backend-template/util"
 	"github.com/Yoshioka9709/yy-go-backend-template/util/errs"
 	"github.com/Yoshioka9709/yy-go-backend-template/util/errs/codes"
 	"github.com/guregu/dynamo"
@@ -14,7 +15,7 @@ import (
 // Todo Todoリポジトリのインターフェイス
 type Todo interface {
 	GetOne(ctx context.Context, id string) (*model.Todo, error)
-	Find(ctx context.Context) ([]*model.Todo, error)
+	Find(ctx context.Context, filter *model.FindTodoFilter) (*model.TodoConnection, error)
 
 	Create(ctx context.Context, user *model.User, input *model.CreateTodoInput) (*model.Todo, error)
 	Update(ctx context.Context, input *model.UpdateTodoInput) (*model.Todo, error)
@@ -48,15 +49,49 @@ func (t *todo) GetOne(ctx context.Context, id string) (*model.Todo, error) {
 }
 
 // Find Todo情報の検索
-func (t *todo) Find(ctx context.Context) ([]*model.Todo, error) {
-	return nil, nil
+func (t *todo) Find(ctx context.Context, filter *model.FindTodoFilter) (*model.TodoConnection, error) {
+	todosTable := t.dynamoDB.Table(infra.TableName(model.TodosTablePrefix))
+	query := todosTable.Get("PK", model.PKTodo)
+
+	pager, err := model.NewForwardPager(filter.Paging, func(limit, offset int) (any, error) {
+		var todos []*model.Todo
+
+		// 検索 最大件数は欲しい値+offset
+		err := query.Order(dynamo.Descending).
+			Limit(int64(filter.Paging.First+offset)).
+			AllWithContext(ctx, &todos)
+		if err != nil {
+			return nil, errs.Wrap(codes.InvalidParameter, err)
+		}
+		return todos[offset:], nil
+	})
+	if err != nil {
+		return nil, errs.Wrap(codes.InternalError, err)
+	}
+
+	// 件数取得
+	totalCount, err := query.CountWithContext(ctx)
+	if err != nil {
+		return nil, errs.Wrap(codes.InvalidParameter, err)
+	}
+
+	pageInfo := pager.PageInfo(int(totalCount))
+	edges := pager.Edges(&model.TodoEdge{}).([]*model.TodoEdge)
+
+	result := &model.TodoConnection{
+		Edges:      edges,
+		PageInfo:   pageInfo,
+		TotalCount: int(totalCount),
+	}
+	return result, nil
 }
 
 // Create Todoを作成
 func (t *todo) Create(ctx context.Context, user *model.User, input *model.CreateTodoInput) (*model.Todo, error) {
 	todosTable := t.dynamoDB.Table(infra.TableName(model.TodosTablePrefix))
 
-	todo := model.NewTodo(user, input.Text)
+	now := util.GetTimeNow()
+	todo := model.NewTodo(user, input.Text, now)
 	todoDTO := dto.Todo{
 		PK:        model.PKTodo,
 		ID:        todo.ID,

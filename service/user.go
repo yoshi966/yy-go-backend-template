@@ -10,7 +10,7 @@ import (
 // User ユーザのインターフェース
 type User interface {
 	GetOne(ctx context.Context, id string) (*model.User, error)
-	Find(ctx context.Context) ([]*model.User, error)
+	Find(ctx context.Context, filter *model.FindUserFilter) (*model.UserConnection, error)
 
 	Create(ctx context.Context, input *model.CreateUserInput) (*model.User, error)
 	Update(ctx context.Context, input *model.UpdateUserInput) (*model.User, error)
@@ -36,8 +36,8 @@ func (u *user) GetOne(ctx context.Context, id string) (*model.User, error) {
 }
 
 // Find ユーザ情報の検索
-func (u *user) Find(ctx context.Context) ([]*model.User, error) {
-	return u.userRepo.Find(ctx)
+func (u *user) Find(ctx context.Context, filter *model.FindUserFilter) (*model.UserConnection, error) {
+	return u.userRepo.Find(ctx, filter)
 }
 
 // Create ユーザを作成

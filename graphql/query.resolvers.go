@@ -17,8 +17,10 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 }
 
 // Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	return getService(ctx).NewUser().Find(ctx)
+func (r *queryResolver) Users(ctx context.Context, paging *model.DataPage) (*model.UserConnection, error) {
+	return getService(ctx).NewUser().Find(ctx, &model.FindUserFilter{
+		Paging: paging,
+	})
 }
 
 // Todo is the resolver for the todo field.
@@ -27,8 +29,10 @@ func (r *queryResolver) Todo(ctx context.Context, id string) (*model.Todo, error
 }
 
 // Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	return getService(ctx).NewTodo().Find(ctx)
+func (r *queryResolver) Todos(ctx context.Context, paging *model.DataPage) (*model.TodoConnection, error) {
+	return getService(ctx).NewTodo().Find(ctx, &model.FindTodoFilter{
+		Paging: paging,
+	})
 }
 
 // Query returns generated.QueryResolver implementation.
