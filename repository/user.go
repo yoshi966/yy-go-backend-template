@@ -3,8 +3,10 @@ package repository
 import (
 	"context"
 
+	"github.com/Yoshioka9709/yy-go-backend-template/dto"
 	"github.com/Yoshioka9709/yy-go-backend-template/infra"
 	"github.com/Yoshioka9709/yy-go-backend-template/model"
+	"github.com/Yoshioka9709/yy-go-backend-template/util"
 	"github.com/Yoshioka9709/yy-go-backend-template/util/errs"
 	"github.com/Yoshioka9709/yy-go-backend-template/util/errs/codes"
 	"github.com/guregu/dynamo"
@@ -14,6 +16,10 @@ import (
 type User interface {
 	GetOne(ctx context.Context, id string) (*model.User, error)
 	Find(ctx context.Context) ([]*model.User, error)
+
+	Create(ctx context.Context, input *model.CreateUserInput) (*model.User, error)
+	Update(ctx context.Context, input *model.UpdateUserInput) (*model.User, error)
+	Delete(ctx context.Context, input *model.DeleteUserInput) (*model.User, error)
 }
 
 // user ユーザーリポジトリの実装
@@ -45,4 +51,68 @@ func (u *user) GetOne(ctx context.Context, id string) (*model.User, error) {
 // Find ユーザ情報の検索
 func (u *user) Find(ctx context.Context) ([]*model.User, error) {
 	return nil, nil
+}
+
+// Create ユーザを作成
+func (u *user) Create(ctx context.Context, input *model.CreateUserInput) (*model.User, error) {
+	usersTable := u.dynamoDB.Table(infra.TableName(model.UsersTablePrefix))
+
+	user := model.NewUser(input.Name)
+
+	now := util.GetTimeNow()
+	userDTO := &dto.User{
+		PK:        model.PKUser,
+		ID:        user.ID,
+		Name:      user.Name,
+		CreatedAt: now,
+		UpdatedAt: now,
+	}
+
+	if err := usersTable.Put(userDTO).RunWithContext(ctx); err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+// Update ユーザーを更新
+func (u *user) Update(ctx context.Context, input *model.UpdateUserInput) (*model.User, error) {
+	usersTable := u.dynamoDB.Table(infra.TableName(model.UsersTablePrefix))
+
+	user, err := u.GetOne(ctx, input.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	user.Name = input.Name
+
+	userDTO := dto.User{
+		PK:   model.PKUser,
+		ID:   user.ID,
+		Name: user.Name,
+	}
+
+	if err := usersTable.Put(userDTO).RunWithContext(ctx); err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+// Delete ユーザーを削除
+func (u *user) Delete(ctx context.Context, input *model.DeleteUserInput) (*model.User, error) {
+	usersTable := u.dynamoDB.Table(infra.TableName(model.UsersTablePrefix))
+
+	user, err := u.GetOne(ctx, input.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	userDTO := dto.User{
+		PK: model.PKUser,
+		ID: user.ID,
+	}
+
+	if err := usersTable.Delete("PK", string(userDTO.PK)).Range("ID", userDTO.ID).RunWithContext(ctx); err != nil {
+		return nil, err
+	}
+	return user, nil
 }

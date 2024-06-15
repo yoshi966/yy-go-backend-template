@@ -41,5 +41,6 @@ func (s *serviceFactory) NewUser() service.User {
 // NewTodo Todoサービスを返す
 func (s *serviceFactory) NewTodo() service.Todo {
 	todoRepo := s.repository.NewTodo()
-	return service.NewTodos(todoRepo)
+	userRepo := s.repository.NewUser()
+	return service.NewTodos(todoRepo, userRepo)
 }
