@@ -17,7 +17,7 @@ RUN make build-amd64
 # アプリケーション 実行用
 
 # hadolint ignore=DL3007
-FROM gcr.io/distroless/base:latest AS runtime_bff
+FROM gcr.io/distroless/base:latest AS runtime_api
 
 WORKDIR /app
 
