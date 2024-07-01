@@ -1,0 +1,54 @@
+name: Deploy
+env:
+  TZ: 'Asia/Tokyo'
+  PROJECT_KEY: yy-go-backend-template
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 今回のコミットハッシュを取得
+        uses: benjlevesque/short-sha@v2.2
+        id: short-sha
+        with:
+          length: 7
+
+      - name: GitHubに登録しているAWSの認証情報を取得して、GitHubActionsに設定する
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: SecretManagerからデータを取得して、.envを作成する
+        uses: say8425/aws-secrets-manager-actions@v2
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-northeast-1
+          SECRET_NAME: yy-go-backend-template/api/dotenv
+          OUTPUT_PATH: '.env' # optional
+
+      - name: ECRにログインする
+        uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Deploy BFF
+        uses: ./.github/actions/deploy-ecs/api
+        with:
+          DOCKER_RUNTIME: runtime_api
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.PROJECT_KEY }}/api
+          ECR_IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
+
+      - name: Dockerからログアウト
+        if: always()
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
