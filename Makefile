@@ -53,10 +53,10 @@ clean: remove-cache remove-bin
 # ビルドコマンド
 .PHONY: build-amd64
 build-amd64:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(BFF_BIN_NAME) -tags 'netgo' -installsuffix netgo $(TRIMPATH)\
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o $(API_BIN_NAME) -tags 'netgo' -installsuffix netgo $(TRIMPATH)\
 		-ldflags '$(LDFLAGS) $(GO_LDFLAGS_VERSION)' \
 		$(BUILDFLAGS) \
-		$(BFF_ENTRY_POINT)
+		$(API_ENTRY_POINT)
 
 # api用ビルドコマンド
 .PHONY: build-api
