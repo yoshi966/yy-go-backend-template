@@ -42,7 +42,7 @@ jobs:
         id: login-ecr
 
       - name: Deploy BFF
-        uses: ./.github/actions/deploy-ecr/api
+        uses: ./.github/actions/deploy-ecr
         with:
           DOCKER_RUNTIME: runtime_api
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
