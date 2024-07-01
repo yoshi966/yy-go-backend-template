@@ -1,0 +1,26 @@
+name: "Deploy ECR"
+description: "イメージを作成してECRにプッシュ"
+inputs:
+  DOCKER_RUNTIME:
+    required: true
+  ECR_REGISTRY:
+    required: true
+  ECR_REPOSITORY:
+    required: true
+  ECR_IMAGE_TAG:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: DockerfileからSHAでタグ付けしてイメージを作成してAPIのECRにプッシュ
+      shell: bash
+      run: |
+        DOCKER_BUILDKIT=1 docker image build --target ${{ inputs.DOCKER_RUNTIME }} -t ${{ inputs.ECR_REGISTRY }}/${{ inputs.ECR_REPOSITORY }}:${{ inputs.ECR_IMAGE_TAG }} .
+        docker push ${{ inputs.ECR_REGISTRY }}/${{ inputs.ECR_REPOSITORY }}:${{ inputs.ECR_IMAGE_TAG }}
+
+    - name: Dockerfileからlatestを指定してイメージを作成してAPIのECRにプッシュ
+      shell: bash
+      run: |
+        DOCKER_BUILDKIT=1 docker image build --target ${{ inputs.DOCKER_RUNTIME }} -t ${{ inputs.ECR_REGISTRY }}/${{ inputs.ECR_REPOSITORY }}:latest .
+        docker push ${{ inputs.ECR_REGISTRY }}/${{ inputs.ECR_REPOSITORY }}:latest
