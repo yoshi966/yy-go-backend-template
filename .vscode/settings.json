@@ -1,0 +1,71 @@
+{
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.associations": {
+    "*.ddl": "sql",
+    "*.gotmpl": "go"
+  },
+  "go.testTimeout": "300s",
+  "go.useLanguageServer": true,
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--config=${workspaceFolder}/.golangci.yml", "--fast"],
+  "go.testEnvVars": {
+    "TEST_USE_DYNAMODB_LOCAL": "1"
+  },
+  "[go]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.snippetSuggestions": "none",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[graphql]": {
+    "editor.formatOnSave": true
+  },
+  "gopls": {
+    "ui.completion.usePlaceholders": true,
+    "ui.diagnostic.staticcheck": true,
+    "build.templateExtensions": ["gotmpl"]
+  },
+  "yaml.customTags": [
+    "!Ref",
+    "!Sub",
+    "!Join sequence",
+    "!FindInMap sequence",
+    "!GetAtt scalar sequence",
+    "!Base64 mapping",
+    "!GetAZs",
+    "!Select sequence",
+    "!Split sequence",
+    "!ImportValue",
+    "!Condition",
+    "!Equals sequence",
+    "!And",
+    "!If",
+    "!Not",
+    "!Or",
+    "!Equals",
+    "!FindInMap",
+    "!Base64",
+    "!Cidr",
+    "!GetAtt",
+    "!Select",
+    "!Split",
+    "!Join",
+    "!And sequence",
+    "!If sequence",
+    "!Not sequence",
+    "!Or sequence",
+    "!Sub sequence",
+    "!ImportValue sequence"
+  ],
+  "cSpell.words": ["testutil"]
+}

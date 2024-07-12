@@ -1,0 +1,15 @@
+// 更新後に `golangci-lint cache clean` すること
+// https://github.com/kisielk/errcheck#excluding-functions
+os.Setenv
+os.UnSetenv
+os.Chdir
+(io.Closer).Close
+(*os.File).Close
+github.com/jinzhu/copier.Copy
+github.com/joho/godotenv.Load
+(*github.com/gin-gonic/gin.Context).Error
+(*github.com/gin-gonic/gin.Context).AbortWithError
+(*github.com/gin-gonic/gin.Error).SetType
+(*github.com/gin-gonic/gin.Error).SetMeta
+(*github.com/ory/dockertest/v3.Pool).Purge
+(*github.com/ory/dockertest/v3.Resource).Expire

@@ -11,6 +11,7 @@ import (
 // LoadEnv apply .env to ENVIRONMENT VARIABLE.
 func LoadEnv() {
 	if _, found := os.LookupEnv("ENV_FILE"); !found {
+		// nolint: errcheck
 		os.Setenv("ENV_FILE", ".env")
 	}
 

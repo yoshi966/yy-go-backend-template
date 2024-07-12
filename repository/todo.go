@@ -37,23 +37,24 @@ func NewTodo(dynamoDB *dynamo.DB) Todo {
 // GetOne Todo情報の取得
 func (t *todo) GetOne(ctx context.Context, id string) (*model.Todo, error) {
 	todosTable := t.dynamoDB.Table(infra.TableName(model.TodosTablePrefix))
-	var Todo model.Todo
+	var todo model.Todo
 	err := todosTable.
 		Get("PK", model.PKTodo).
 		Range("ID", dynamo.Equal, id).
-		OneWithContext(ctx, &Todo)
+		OneWithContext(ctx, &todo)
 	if err != nil {
 		return nil, errs.Wrap(codes.InternalError, err)
 	}
-	return &Todo, nil
+	return &todo, nil
 }
 
 // Find Todo情報の検索
+// nolint: dupl
 func (t *todo) Find(ctx context.Context, filter *model.FindTodoFilter) (*model.TodoConnection, error) {
 	todosTable := t.dynamoDB.Table(infra.TableName(model.TodosTablePrefix))
 	query := todosTable.Get("PK", model.PKTodo)
 
-	pager, err := model.NewForwardPager(filter.Paging, func(limit, offset int) (any, error) {
+	pager, err := model.NewForwardPager(filter.Paging, func(_, offset int) (any, error) {
 		var todos []*model.Todo
 
 		// 検索 最大件数は欲しい値+offset
@@ -75,12 +76,9 @@ func (t *todo) Find(ctx context.Context, filter *model.FindTodoFilter) (*model.T
 		return nil, errs.Wrap(codes.InvalidParameter, err)
 	}
 
-	pageInfo := pager.PageInfo(int(totalCount))
-	edges := pager.Edges(&model.TodoEdge{}).([]*model.TodoEdge)
-
 	result := &model.TodoConnection{
-		Edges:      edges,
-		PageInfo:   pageInfo,
+		Edges:      pager.Edges(&model.TodoEdge{}).([]*model.TodoEdge),
+		PageInfo:   pager.PageInfo(int(totalCount)),
 		TotalCount: int(totalCount),
 	}
 	return result, nil

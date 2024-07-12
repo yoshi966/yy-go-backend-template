@@ -21,7 +21,7 @@ func transportWebsocket() *transport.Websocket {
 		KeepAlivePingInterval: pingInterval,
 		Upgrader: websocket.Upgrader{
 			HandshakeTimeout: handshakeTimeout,
-			CheckOrigin: func(r *http.Request) bool {
+			CheckOrigin: func(_ *http.Request) bool {
 				// ひとまずCorsは全部許可
 				return true
 			},

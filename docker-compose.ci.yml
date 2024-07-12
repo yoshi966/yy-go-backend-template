@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  golangci-lint:
+    image: golangci/golangci-lint:v1.59.1-alpine
+    volumes:
+      - go-mod:/go/pkg/mod
+      - go-bin:/go/bin
+      - go-cache:/root/.cache
+      - .:/app:ro
+    working_dir: /app
+
+  golang-test:
+    image: golang:1.22.4-alpine
+    volumes:
+      - go-mod:/go/pkg/mod
+      - go-bin:/go/bin
+      - go-cache:/root/.cache
+      - ~/.docker/config.json:/root/.docker/config.json:ro
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - CGO_ENABLED=0
+      - HOST_DIR=${PWD}
+    working_dir: /app
+    network_mode: host
+
+  hadolint:
+    image: hadolint/hadolint:v2.12.0-alpine
+    volumes:
+      - ./Dockerfile:/app/Dockerfile:ro
+    working_dir: /app
+
+volumes:
+  go-mod:
+  go-bin:
+  go-cache:

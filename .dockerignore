@@ -1,0 +1,24 @@
+### git ###
+.gitignore
+.github
+.gitmodules
+
+### .gitignore と共通 ###
+.vscode/
+coverage.out
+*.log
+bin/
+
+### ビルドに不要なファイル ###
+.*.json
+.*.yml
+.air.toml
+.golangci.*
+aws/
+docker-compose*.yml
+Dockerfile
+docs/
+fixtures/
+README.md
+renovate.json
+scripts/
