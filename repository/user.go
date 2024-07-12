@@ -49,11 +49,12 @@ func (u *user) GetOne(ctx context.Context, id string) (*model.User, error) {
 }
 
 // Find ユーザ情報の検索
+// nolint: dupl
 func (u *user) Find(ctx context.Context, filter *model.FindUserFilter) (*model.UserConnection, error) {
 	usersTable := u.dynamoDB.Table(infra.TableName(model.UsersTablePrefix))
 	query := usersTable.Get("PK", model.PKUser)
 
-	pager, err := model.NewForwardPager(filter.Paging, func(limit, offset int) (any, error) {
+	pager, err := model.NewForwardPager(filter.Paging, func(_, offset int) (any, error) {
 		var users []*model.User
 
 		// 検索 最大件数は欲しい値+offset
@@ -75,12 +76,9 @@ func (u *user) Find(ctx context.Context, filter *model.FindUserFilter) (*model.U
 		return nil, errs.Wrap(codes.InvalidParameter, err)
 	}
 
-	pageInfo := pager.PageInfo(int(totalCount))
-	edges := pager.Edges(&model.UserEdge{}).([]*model.UserEdge)
-
 	result := &model.UserConnection{
-		Edges:      edges,
-		PageInfo:   pageInfo,
+		Edges:      pager.Edges(&model.UserEdge{}).([]*model.UserEdge),
+		PageInfo:   pager.PageInfo(int(totalCount)),
 		TotalCount: int(totalCount),
 	}
 	return result, nil

@@ -1,0 +1,98 @@
+# https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 10m
+
+linters:
+  disable-all: true
+  enable:
+    - dupl
+    - errcheck
+    - errorlint
+    - exportloopref
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - gofumpt
+    - goimports
+    - mnd
+    - gosec
+    - govet
+    - makezero
+    - misspell
+    - nilnil
+    - prealloc
+    - revive
+    - stylecheck
+    - unconvert
+    - unused
+    - whitespace
+
+linters-settings:
+  errcheck:
+    exclude-function: .golangci.errcheck
+  dupl:
+    threshold: 200
+  gocyclo:
+    min-complexity: 30
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment # TODO: 有効にする
+      - shadow
+
+issues:
+  exclude-use-default: false
+
+  exclude-rules:
+    # errcheckと重複する警告を除外
+    - linters:
+        - gosec
+      text: "(G104|G307|G404|G101|G107):"
+
+    # テストでは一部ルールを適用しない
+    - path: _test\.go$
+      linters:
+        - dupl
+        - gocyclo
+        - nilnil
+
+    # 自動生成されたGraphQLコードでは制約系は無視
+    - path: ^graphql/.+\.resolvers\.go$
+      linters:
+        - dupl
+        - nilnil
+        - gofumpt
+        - stylecheck
+
+    - path: ^graphql/.+\.resolvers\.go$
+      linters:
+        - stylecheck
+      text: "(ST1003):"
+
+    # ルート設定ではunnecessaryBlockを無視
+    - path: ^server/routes\.go$
+      text: "unnecessaryBlock:"
+      linters:
+        - gocritic
+
+    - path: ^util/env
+      linters:
+        - dupl
+
+    - path: ^util/env
+      linters:
+        - mnd
+
+    - path: ^middleware
+      linters:
+        - dupl
+
+    - path: ^factory
+      linters:
+        - dupl
+
+    - path: ^util/str
+      linters:
+        - mnd

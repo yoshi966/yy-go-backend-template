@@ -15,7 +15,6 @@ import (
 	"github.com/Yoshioka9709/yy-go-backend-template/util/env"
 
 	"github.com/gin-gonic/gin"
-	"github.com/guregu/dynamo"
 )
 
 const (
@@ -23,23 +22,9 @@ const (
 	readHeaderTimeout = 3600 * time.Second
 )
 
-var (
-	dynamoClient *dynamo.DB
-)
-
-func initClients() {
-	var err error
-	dynamoClient = infra.NewDynamoDBClient()
-
-	if err != nil {
-		panic(err)
-	}
-}
-
 func getServiceSetting() *factory.ServiceFactorySettings {
-	initClients()
 	return &factory.ServiceFactorySettings{
-		DynamoDB: dynamoClient,
+		DynamoDB: infra.NewDynamoDBClient(),
 	}
 }
 

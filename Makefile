@@ -82,3 +82,16 @@ docker-down:
 	docker volume rm yy-go-backend-template-dynamodb-redis
 	docker volume rm yy-go-backend-template-dynamodb-redisinsight
 
+# CI
+.PHONY: lint
+lint:
+	docker-compose -p yy-go-backend-template-ci -f docker-compose.ci.yml run --rm golangci-lint golangci-lint run
+	docker-compose -p yy-go-backend-template-ci -f docker-compose.ci.yml run --rm hadolint hadolint Dockerfile
+
+.PHONY: test
+test:
+	docker-compose -p yy-go-backend-template-ci -f docker-compose.ci.yml run --rm golang-test sh -c " \
+		go install github.com/rakyll/gotest && \
+		gotest -buildvcs=false -cover -coverprofile=./coverage.out ./... && \
+		go tool cover -func=coverage.out | grep 'total:' \
+	"

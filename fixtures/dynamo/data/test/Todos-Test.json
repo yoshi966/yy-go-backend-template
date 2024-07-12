@@ -1,0 +1,58 @@
+[
+  {
+    "Put": {
+      "TableName": "Todos-Test",
+      "Item": {
+        "PK": {
+            "S": "todo"
+        },
+        "ID": {
+            "S": "dummytodoid1001"
+        },
+        "CreatedAt": {
+            "S": "2024-06-01T12:00:00.0000000Z"
+        },
+        "UpdatedAt": {
+            "S": "2024-06-01T12:00:00.0000000Z"
+        },
+        "UserID": {
+            "S": "dummyuserid0001"
+        },
+        "Text": {
+            "S": "これはテストの投稿です"
+        },
+        "Done": {
+            "BOOL": false
+        }
+      }
+    }
+  },
+  {
+    "Put": {
+      "TableName": "Todos-Test",
+      "Item": {
+        "PK": {
+            "S": "todo"
+        },
+        "ID": {
+            "S": "dummytodoid1002"
+        },
+        "CreatedAt": {
+            "S": "2024-06-01T12:00:00.0000000Z"
+        },
+        "UpdatedAt": {
+            "S": "2024-06-01T12:00:00.0000000Z"
+        },
+        "UserID": {
+            "S": "dummyuserid0001"
+        },
+        "Text": {
+            "S": "これはテストの投稿です"
+        },
+        "Done": {
+            "BOOL": false
+        }
+      }
+    }
+  }
+]

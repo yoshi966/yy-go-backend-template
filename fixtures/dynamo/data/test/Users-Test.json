@@ -1,7 +1,7 @@
 [
   {
     "Put": {
-      "TableName": "Users-Local",
+      "TableName": "Users-Test",
       "Item": {
         "PK": {
             "S": "user"
@@ -23,7 +23,7 @@
   },
   {
     "Put": {
-      "TableName": "Users-Local",
+      "TableName": "Users-Test",
       "Item": {
         "PK": {
             "S": "user"

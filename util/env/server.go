@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+// 環境変数のキー
 const (
 	PortKey    = "PORT"
 	OnTraceKey = "ON_TRACE"

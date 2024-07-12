@@ -35,6 +35,7 @@ func (c Cursor) Pos() (int, error) {
 	return strconv.Atoi(string(buf[len(cursorPrefix):]))
 }
 
+// PageInfo ページング情報
 type PageInfo struct {
 	EndCursor   *Cursor `json:"endCursor"`
 	HasNextPage bool    `json:"hasNextPage"`

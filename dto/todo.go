@@ -6,6 +6,7 @@ import (
 	"github.com/Yoshioka9709/yy-go-backend-template/model"
 )
 
+// Todo DTO
 type Todo struct {
 	PK        model.PK
 	ID        string

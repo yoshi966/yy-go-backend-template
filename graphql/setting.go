@@ -177,6 +177,7 @@ func errorPresenter(ctx context.Context, e error) *gqlerror.Error {
 			Msg("GraphQL protocol error")
 
 		// ErrorMiddleware で処理しないタイプに設定
+		// nolint: errcheck
 		getContext(ctx).Error(err).SetType(gin.ErrorTypePublic)
 		return err
 	}
@@ -201,8 +202,8 @@ func errorPresenter(ctx context.Context, e error) *gqlerror.Error {
 	err.Extensions = extensions
 
 	// ErrorMiddleware で処理しないタイプに設定
+	// nolint: errcheck
 	getContext(ctx).Error(ce).SetType(gin.ErrorTypePublic)
-
 	return err
 }
 
